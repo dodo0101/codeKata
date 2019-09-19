@@ -1,3 +1,5 @@
+package com.epam.codekata;
+
 import java.util.stream.Stream;
 
 public class Main {

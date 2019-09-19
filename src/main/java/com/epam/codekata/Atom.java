@@ -1,3 +1,5 @@
+package com.epam.codekata;
+
 public class Atom {
     private String name;
     private double atomic_mass;
