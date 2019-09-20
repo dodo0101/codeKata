@@ -3,7 +3,14 @@ package com.epam.codekata;
 public class Atom {
     private String name;
     private double atomic_mass;
+
     private byte number;
+
+    public Atom(String name, double atomic_mass, byte number) {
+        this.name = name;
+        this.atomic_mass = atomic_mass;
+        this.number = number;
+    }
 
     public String getName() {
         return name;
@@ -27,5 +34,14 @@ public class Atom {
 
     public void setNumber(byte number) {
         this.number = number;
+    }
+
+    @Override
+    public String toString() {
+        return "Atom{" +
+                "name='" + name + '\'' +
+                ", atomic_mass=" + atomic_mass +
+                ", number=" + number +
+                '}';
     }
 }
