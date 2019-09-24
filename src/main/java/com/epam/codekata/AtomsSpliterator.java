@@ -4,14 +4,14 @@ import java.util.Spliterator;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
-public class AtomsSpliterator<T,R> implements Spliterator<R> {
+public class AtomsSpliterator<T, R> implements Spliterator<R> {
     Spliterator<T> source;
     boolean hasLast, hasPrev;
     private T cur;
     private final T last;
     private final BiFunction<T, T, R> mapper;
 
-    public AtomsSpliterator(BiFunction<T,T,R> mapper, Spliterator<T> source) {
+    public AtomsSpliterator(BiFunction<T, T, R> mapper, Spliterator<T> source) {
         this(mapper, source, null, false, null, false);
     }
 
@@ -25,8 +25,13 @@ public class AtomsSpliterator<T,R> implements Spliterator<R> {
         this.mapper = mapper;
     }
 
+    void setCur(T t) {
+        cur = t;
+    }
+
+
     @Override
-    public boolean tryAdvance(Consumer<? super R> action) {
+    public boolean tryAdvance(Consumer action) {
         if (!hasPrev) { // мы в самом начале: считаем один элемент из источника
             if (!source.tryAdvance(this::setCur)) {
                 return false; // источник вообще пустой — выходим
@@ -45,7 +50,7 @@ public class AtomsSpliterator<T,R> implements Spliterator<R> {
     }
 
     @Override
-    public Spliterator<R> trySplit() {
+    public Spliterator trySplit() {
         Spliterator<T> prefixSource = source.trySplit(); // пытаемся разделить источник
         if (prefixSource == null)
             return null; // не вышло — тогда мы сами тоже не делимся
@@ -56,7 +61,7 @@ public class AtomsSpliterator<T,R> implements Spliterator<R> {
         }
         boolean oldHasPrev = hasPrev;
         hasPrev = true; // теперь текущий сплитератор обходит вторую половину, а для первой создаём новый
-        return new AtomsSpliterator<>(mapper, prefixSource, prev, oldHasPrev, cur, true);
+        return new AtomsSpliterator(mapper, prefixSource, prev, oldHasPrev, cur, true);
     }
 
     @Override
@@ -74,9 +79,5 @@ public class AtomsSpliterator<T,R> implements Spliterator<R> {
     @Override
     public int characteristics() {
         return source.characteristics() & (SIZED | SUBSIZED | CONCURRENT | IMMUTABLE | ORDERED);
-    }
-
-    void setCur(T t) {
-        cur = t;
     }
 }
