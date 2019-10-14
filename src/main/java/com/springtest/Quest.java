@@ -40,8 +40,8 @@ public class Quest {
 
             String name = jo.getString("name");
 
-            Map<String, String> map = new HashMap<>();
-            map.put("A",  jo.getString("A")==null?);
+            Map<String, Object> map = new HashMap<>();
+            map.put("A",  jo.getString("A"));
             map.put("B",  jo.get("B"));
             map.put("C",  jo.get("C"));
             map.put("D",  jo.get("D"));
