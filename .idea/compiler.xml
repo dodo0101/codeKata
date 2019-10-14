@@ -9,8 +9,5 @@
         <module name="codeKata1709" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="codeKata1709" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

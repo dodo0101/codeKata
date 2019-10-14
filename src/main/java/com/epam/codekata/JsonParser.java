@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JsonParser {
-    static final String source = "C:\\Users\\Zstudent\\git\\codeKata\\src\\main\\resources\\PeriodicTableJSON.json";
+    static final String source = "C:\\Users\\Fedor_Glushchenko\\git\\codeKata\\src\\main\\resources\\PeriodicTableJSON.json";
 
     public static void main(String[] args) {
         JsonParser js = new JsonParser();
@@ -60,6 +60,5 @@ public class JsonParser {
         return Stream.generate(() -> (int) (Math.random() * 118))
                 .limit(10)
                 .collect(Collectors.toList());
-
     }
 }

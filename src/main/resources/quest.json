@@ -1,0 +1,717 @@
+{
+    "questions": [
+        {
+		"name" : "What is a bean?",
+		"A" : "A.\ta Plain Old Java Object",
+		"B" : "B.\tan instance of a class",
+		"C" : "C.\tan object that is instantiated, assembled, and managed by a Spring IoC Container",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "A", "B", "C" ]
+		},
+		{
+		"name" : "What is the default scope of a bean?",
+		"A" : "A.\tdefault",
+		"B" : "B.\tsingleton",
+		"C" : "C.\tprotected",
+		"D" : "D.\tprototype",
+		"E" : null,
+		"F" : null,
+		"answer" : [ "B" ]
+		},
+		{
+		"name" : "What are the types of dependency injection supported by Spring IoC Container?",
+		"A" : "A.\tsetter injection",
+		"B" : "B.\tconstructor injection",
+		"C" : "C.\tinterface-based injection",
+		"D" : "D.\tfield-based injection",
+		"E" : null,
+		"F" : null,
+		"answer" : [ "A", "B", "D" ]
+		},
+		{
+		"name" : "What class is used to bootstrap an XML configured application context?",
+		"A" : "A.\tClassPathXmlApplicationContext",
+		"B" : "B.\tAnnotationConfigApplicationContext",
+		"C" : "C.\tApplicationContext",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "A", "B", "C" ]
+		},
+		{
+		"name" : "Which of the following are stereotype annotations?",
+		"A" : "A.\t@Component",
+		"B" : "B.\t@Bean",
+		"C" : "C.\t@PostConstruct",
+		"D" : "D.\t@Scope",
+		"E" : "E.\t@Configuration",
+		"F" : null,
+		"answer" : [ "A" ]
+		},
+		{
+		"name" : "What is the difference between declaring a bean with @Bean and with @Component?",
+		"A" : "A.\t@Bean annotates a method that creates a bean in a configuration class; @Component annotates classes to mark them as bean definitions for the Spring Container",
+		"B" : "B.\t@Bean is a specialization of @Component and annotates classes to mark them as bean definitions for the Spring Container",
+		"C" : "C.\t@Bean is the JSR 250 equivalent of @Component",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "A" ]
+		},
+		{
+		"name" : "Given the following bean definition, what will be printed in the log when the application runs?\n\npublic class QuizBean {\n// assume correct logger instantiation here Logger log =...;\n\nprivate void initMethod() {\nlogger.info(\"--> I’m calling it bean soon\");\n}\n}\n// bean configuration\n<bean id=\"quizBean\" class=\"QuizBean\"\ninit-method=\"initMethod\"/>\n",
+		"A" : "A.\tthe application won’t run, it will crash in the initialization phase because the\ninitMethod is private\n",
+		"B" : "B.\tthe application will run, but won’t create the quizBean because its initialization method is private",
+		"C" : "C.\t–> I’m calling it bean soon",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "C" ]
+		},
+		{
+		"name" : "Given the quizBean bean definition, choose from the list the bean definitions that are equivalent.\n\n<bean id=\"quizBean\" class=\"QuizBean\"\ninit-method=\"initMethod\">\n<property name=\"petitBean\" ref=\"petitBean\"/>\n</bean>\n",
+		"A" : "A.\t@Component\npublic class QuizBean {\npublic void setPetitBean(PetitBean petitBean) { this.petitBean = petitBean;\n}\n@PostConstruct\nprivate void initMethod() {\nlogger.info(\"--> I’m calling it bean soon\");\n}\n}\n",
+		"B" : "B.\t@Configuration\npublic class QuizConfiguration {\n\n//assume petitBean() is defined here\n\n@Bean(initMethod=\"initMethod\") private QuizBean getQuizBean() {\nreturn new QuizBean(petitBean());\n}\n}\n",
+		"C" : "C.\t<bean id=\"quizBean\" class=\"QuizBean\"\ninit-method=\"initMethod\" p:petitBean=\"petitBean\" />\n",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "A", "B", "C" ]
+		},
+		{
+		"name" : "Which of the following beans is a bean factory post processor?",
+		"A" : "A.\tClassPathXmlApplicationContext",
+		"B" : "B.\tPropertySourcesPlaceholderConfigurer",
+		"C" : "C.\tCommonAnnotationBeanPostProcessor",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "B" ]
+		},
+		{
+		"name" : "What is the correct way to import bean definitions from an XML file into a configuration class?",
+		"A" : "A.\t@Import(\"classpath:spring/app-config.xml\")",
+		"B" : "B.\t@Resource(\"classpath:spring/app-config.xml\")",
+		"C" : "C.\t@ImportResource(\"classpath:spring/app-config.xml\")",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "C" ]
+		},
+		{
+		"name" : "Given the following configuration class and bean, the bean being autowired into another bean as dependency, what happens when the application runs?\n\npackage com.cfg;\n//configuration @Configuration\npublic class AppConfig {}\n\n\n\n\n113\n \nChapter 2 ■ Spring Bean LifeCyCLe and Configuration\n\npackage com.quiz;\n// bean @Component\npublic class QuizBean {}\n\npackage com.another.quiz;\n// autowiring the bean @Component\npublic class AnotherQuizBean { @Autowired\nQuizBean quizBean;\n}\n",
+		"A" : "A.\tan exception will be thrown because there is no scope defined for the bean of type QuizBean",
+		"B" : "B.\tan exception will be thrown because @ComponentScan is missing from the configuration class so the bean definitions are not discovered",
+		"C" : "C.\ta bean of type QuizBean is created and autowired into a bean of type AnotherQuizBean",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "B" ]
+		},
+		{
+		"name" : "The Spring IoC container by default tries to identify beans to autowire by type; if multiple beans are found, it it chooses for autowiring the one that has the same name with the dependency being autowired",
+		"A" : "A.\tTrue",
+		"B" : "B.\tFalse",
+		"C" : null,
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "A" ]
+		},
+		{
+		"name" : "Given the following integration test:\n\n@RunWith(SpringJUnit4ClassRunner.class) @ContextConfiguration\npublic class SimpleTest {\n//test methods here\n}\n\nWhat can be said about the behavior of Spring when the test is executed? (choose all that apply)\n",
+		"A" : "A.\tSpring will build an empty context and the tests will fail",
+		"B" : "B.\tSpring will not be able to create a test context for the tests to run in",
+		"C" : "C.\tSpring will look for a file named SimpleTest-context.xml in the same location as the SimpleTest class to use it to initialize the context",
+		"D" : null,
+		"E" : null,
+		"F" : null,
+		"answer" : [ "C" ]
+		},
+		{
+		"name" : "Given the following unit test, what is missing from the class definition that prevents the test from being executed correctly?\n public class SimplePetServiceTest { @InjectMocks\n SimplePetService simplePetService; PetRepo petRepo;\n @Before\n public void initMocks() { MockitoAnnotations.initMocks(this);}\n @Test\n public void findById() { Mockito.when(petRepo.findById(1L)).thenReturn(new Pet()); Pet pet = simplePetService.findById(1L); assertNotNull(pet);}}",
+		"A" : "A.\tThe class should be annotated with @RunWith(MockitoRunner.class)",
+		"B" : "B.\tThe setUp method is missing the following statement:\nsimplePetService.setRepo(petRepo);\n",
+		"C" : "C.\tNothing, the test will be executed correctly and it will pass.",
+		"D" : "D.\tThe petRepo field is missing annotation @Mock",
+		"E" : null,
+		"F" : null,
+		"answer" : [ "A", "D" ]
+		},
+		{
+			"name" : "The class SpringJUnit4ClassRunner is used to set up a test context.",
+			"A" : "A.\ttrue",
+			"B" : "B.\tfalse",
+			"C" : null,
+			"D" : null,
+			"E" : null,
+			"F" : null,
+			"answer" : [ "B" ]
+		},
+		{
+			"name" : "What is the @ContextConfiguration used for?",
+			"A" : "A.\tto load and configure a TestApplicationContext instance",
+			"B" : "B.\tto load and configure an ApplicationContext for integration testing",
+			"C" : "C.\tto inject beans used in unit testing",
+			"D" : null,
+			"E" : null,
+			"F" : null,
+			"answer" : [ "B" ]
+		},
+		{
+			"name" : "What library is mandatory for writing unit tests for a Spring application?",
+			"A" : "A.\tJUnit",
+			"B" : "B.\tspring-test",
+			"C" : "C.\tany mock generating library such as jMock, Mockito, or EasyMock",
+			"D" : null,
+			"E" : null,
+			"F" : null,
+			"answer" : [ "A" ]
+		},
+		{
+			"name" : "Which options in the list below represent a cross-cutting concern?",
+			"A" : "A.\tconnecting to the database",
+			"B" : "B.\tcaching",
+			"C" : "C.\tsecurity",
+			"D" : "D.\ttransactions",
+			"E" : null,
+			"F" : null,
+			"answer" : [ "B", "C", "D" ]
+		},
+		{
+			"name" : "Which options in the list are used to declare advice in Spring AOP?",
+			"A" : "A.\t@Aspect",
+			"B" : "B.\t@Before",
+			"C" : "C.\t@Pointcut",
+			"D" : "D.\t@AfterReturning",
+			"E" : "E.\t@After",
+			"F" : null,
+			"answer" : [ "A", "B", "C", "D", "E" ]
+		},
+		{
+			"name" : "What is true about the after advice?",
+			"A" : "A.\tit is not executed if the target method execution ends by throwing an exception",
+			"B" : "B.\tit can catch the target method exception and prevent propagation",
+			"C" : "C.\tit can catch the target method exception and throw a different exception",
+			"D" : null,
+			"E" : null,
+			"F" : null,
+			"answer" : [ "C" ]
+		},
+		{
+			"name" : "Which methods will match the following pointcut expression? (choose all that apply)\nexecution(protected * com.ps.repos.*.*Repo.find*(..))\n",
+			"A" : "A.\tnone: Spring AOP supports only advising public methods",
+			"B" : "B.\tcom.ps.repos.impl.JdbcTemplateUserRepo.findById(Long id)",
+			"C" : "C.\tcom.ps.repos.impl.JdbcUserRepository.findAll()",
+			"D" : null,
+			"E" : null,
+			"F" : null,
+			"answer" : [ "A" ]
+		},
+		{
+			"name" : "Which of the following pointcut expressions match the following method definition? Method definition: a method named update that has the first parameter of type Long and more parameters may follow",
+			"A" : "execution(update(*))",
+			"B" : "B.\texecution(* update(Long, *))",
+			"C" : "C.\texecution(* update(..))",
+			"D" : "D.\texecution(* update(Long,..))",
+			"E" : null,
+			"F" : null,
+			"answer" : [ "D" ]
+		},
+        {
+          "name" : "What is the XML equivalent of @EnableAspectJAutoProxy ?",
+          "A" : "A.\t<aop:aspectj-autoproxy>\n<aop:aspect base-package=\"...\"/>\n</aop:aspectj-autoproxy>\n",
+          "B" : "B.\t<aop:aspectj-autoproxy>\n<aop:include name=\"...\"/>\n</aop:aspectj-autoproxy>\n",
+          "C" : "C.\t<aop:config>\n<aop:aspect ref=\"...\">\n</aop:config>\n",
+          "D" : null,
+          "E" : null,
+          "F" : null,
+          "answer" : [ "B" ]
+        },
+        {
+          "name" : "Which of the following is true about Spring AOP proxies?",
+          "A" : "A.\tA proxy object must implement the interface that the target implements or be a subclass of the target’s type.",
+          "B" : "B.\tA proxy object has scope prototype.",
+          "C" : "C.\tSpring AOP uses subclass-based proxies by default.",
+          "D" : null,
+          "E" : null,
+          "F" : null,
+          "answer" : [ "A" ]
+        },
+        {
+          "name" : "What is a pointcut?",
+          "A" : "A.\ta parameter that every advice method must specify in its signature that provides access to the execution context",
+          "B" : "B.\tan expression to identify methods to which the advice applies to",
+          "C" : "C.\ta predicate used to identify join points.",
+          "D" : null,
+          "E" : null,
+          "F" : null,
+          "answer" : [ "B", "C" ]
+        },
+        {
+          "name" : "What data access technology is supported by the Spring framework?",
+          "A" : "A.\tJDBC",
+          "B" : "B.\tHibernate",
+          "C" : "C.\tJPA",
+          "D" : "D.\tNoSQL",
+          "E" : null,
+          "F" : null,
+          "answer" : [ "A", "B", "C" ]
+        },
+      {
+        "name" : "Does Spring support transactional execution when using JdbcTemplate?",
+        "A" : "A.\tyes, if the methods encapsulating JdbcTemplate are annotated with @ Transactional",
+        "B" : "B.\tno",
+        "C" : null,
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "Analyze the following code snippet:\n\npublic Set<User> findAll() {\nString sql = \"select id, username, email, password from p_user\"; return new HashSet<>(jdbcTemplate.query(sql, rowMapper));\n}\n What can be said about the rowMapper object ? (choose all that apply)",
+        "A" : "A.\tmust implement RowMapper<T> interface",
+        "B" : "B.\tis stateful",
+        "C" : "C.\tprovides a method to transform a ResultSet content into User objects",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "C" ]
+      },
+      {
+        "name" : "Does JdbcTemplate support execution of SQL native queries?",
+        "A" : "A.\tyes",
+        "B" : "B.\tno",
+        "C" : "C.\tif configured so",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "What is not provided by JdbcTemplate?",
+        "A" : "A.\tJDBC exception wrapping into DataAccessException",
+        "B" : "B.\tdata source access",
+        "C" : "C.\tJDBC query execution with named parameters",
+        "D" : "D.\tmethod to open/close a connection",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C", "D" ]
+      },
+      {
+        "name" : "What needs to be done to implement transactional behavior in a Spring application? ",
+        "A" : "A.\tenable declarative transaction support by annotating a configuration class with @ EnableTransactionManagement",
+        "B" : "B.\tdeclare a transaction manager bean",
+        "C" : "C.\tannotate service methods with @Transactional",
+        "D" : "D.\tactivate transactional profile",
+        "E" : "E.\twhen using XML, declare <tx:annotation-driven/>",
+        "F" : null,
+        "answer" : [ "A", "B", "C", "E" ]
+      },
+      {
+        "name" : "Which of the following are valid transaction propagation values?",
+        "A" : "A.\tMANDATORY",
+        "B" : "B.\tREQUIRED",
+        "C" : "C.\tPREFERED",
+        "D" : "D.\tNOT_ALLOWED",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "B" ]
+      },
+      {
+        "name" : "When should a transaction be declared as readOnly?",
+        "A" : "A.\twhen it does not include any writing statements execution",
+        "B" : "B.\twhen a large set of data is read",
+        "C" : "C.\twhen no changes should be allowed to the databases",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "Analyze the following code snippet:\n\n@Service\n@Transactional(readOnly = true, propagation = Propagation.REQUIRED) public class UserServiceImpl implements UserService {\n@Transactional(propagation = Propagation.REQUIRES_NEW) @Override\npublic User findById(Long id) { return userRepo.findById(id);\n}\n}\n\nWhat can be said about the findById() method?\n",
+        "A" : "A.\tthe method is executed in a new transaction",
+        "B" : "B.\twhen a method is executed, an exception will be thrown because the transaction is not declared as readOnly",
+        "C" : "C.\tthe method is executed in an existing transaction",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "Spring provides programatic transaction management. What are the Spring type of beans that are used to implement a repository class using programatic transaction management?",
+        "A" : "A.\tTransactionTemplate",
+        "B" : "B.\tTransactionDefinition",
+        "C" : "C.\tTransactionService",
+        "D" : "D.\tTransactionCallback",
+        "E" : "E.\tPlatformTransactionManager",
+        "F" : "F.\tTransactionStatus",
+        "answer" : [ "A", "B", "D", "E", "F" ]
+      },
+      {
+        "name" : "What is the default rollback policy in transaction management?",
+        "A" : "A.\tRollback for any Exception",
+        "B" : "B.\tRollback for RuntimeException",
+        "C" : "C.\tRollback for checked exceptions",
+        "D" : "D.\tAlways commit",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "B" ]
+      },
+      {
+        "name" : "What is used “under the hood” to implement the transactional behavior in Spring?",
+        "A" : "A.\tJDBC",
+        "B" : "B.\tJPA",
+        "C" : "C.\tAOP",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C" ]
+      },
+      {
+        "name" : "What happens if a method annotated with @Transactional calls another method annotated with @Transactional ?",
+        "A" : "A.\ta transaction is created for each method",
+        "B" : "B.\ta single transaction is created and the methods are executed as a single unit of work",
+        "C" : "C.\tdepends on the configuration for each @Transactional",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "B" ]
+      },
+      {
+        "name" : "Which of the following are Hibernate-specific Spring infrastructure beans?",
+        "A" : "A.\tSessionFactory",
+        "B" : "B.\tSession",
+        "C" : "C.\tHibernateTransactionManager",
+        "D" : "D.\tHikariDataSource",
+        "E" : "E.\tLocalSessionFactoryBuilder",
+        "F" : null,
+        "answer" : [ "A", "B", "C" ]
+      },
+      {
+        "name" : "What can be said about the @Entity annotation? ",
+        "A" : "A.\tis part of the JPA official API",
+        "B" : "B.\tcan be used without the JPA API",
+        "C" : "C.\tmarks the class as an entity; instances of this class will be mapped to table records",
+        "D" : "D.\tit can be placed only at class level",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "C", "D" ]
+      },
+      {
+        "name" : "What is needed to work with JPA in Spring?",
+        "A" : "A.\tdeclare an EntityManagerFactory bean",
+        "B" : "B.\tdeclare a PersistenceProvider bean",
+        "C" : "C.\tdeclare a JpaTransactionManager bean",
+        "D" : "D.\tall of the above",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "C" ]
+      },
+      {
+        "name" : "What can be done to declare an instant repository with Spring Data JPA?",
+        "A" : "A.\textend interface Repository",
+        "B" : "B.\tno need to extend an interface; just annotate the interface with @ RepositoryDefinition",
+        "C" : "C.\tfor multiple methods out of the box extend JpaRepository",
+        "D" : "D.\timplement interface Repository",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "B", "C" ]
+      },
+      {
+        "name" : "What configuration annotation enables creation of repository instances with SpringDataJPA?",
+        "A" : "A.\t@EnableJpaRepositories",
+        "B" : "B.\t@EnableInstantRepositories",
+        "C" : "C.\t@EnableRepositoryGeneration",
+        "D" : "D.\t@EnableTransactionManagement",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "Analyze the following code snippet:\npublic interface UserRepo extends JpaRepository<User, Long> { @Query(\"select u from User u where u.username like %?1%\") List<User> findAllByUserName(String username);\n}\n\nWhat can be said about the findAllByUserName() method?\n",
+        "A" : "A.\tit is not a valid Spring Data JPA repository method",
+        "B" : "B.\tthe argument for @Query is a JPQL query",
+        "C" : "C.\tthe class is not a repository, because it is not annotated with @Repository",
+        "D" : "D.\tthis code will not compile",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "B" ]
+      },
+      {
+        "name" : "Which of the following statements regarding DispatcherServlet is true?",
+        "A" : "A.\tIt is used to enable web support for Spring applications.",
+        "B" : "B.\tIntercepts all HTTP requests and delegates them to the appropriate handlers.",
+        "C" : "C.\tIt must be declared as a bean in the root context of the application.",
+        "D" : "D.\tDispatcherServlet cannot be configured without the web.xml file.",
+        "E" : "E.\tDispatcherServlet is the main servlet class of a Spring Web application.",
+        "F" : null,
+        "answer" : [ "B", "E" ]
+      },
+      {
+        "name" : "What does MVC stand for?",
+        "A" : "A.\tModel View Controller",
+        "B" : "B.\tMapping View Controller",
+        "C" : "C.\tModule View Control",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "What annotation is used to map HTTP Requests to handler methods?",
+        "A" : "A.\t@HandlerMapping",
+        "B" : "B.\t@RequestMapping",
+        "C" : "C.\t@Mapping",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "B" ]
+      },
+      {
+        "name" : "Considering the following handler method definition:\n\n@RequestMapping(value = \"/showUser\", method = RequestMethod.GET) public String show(@RequestParam(\"userId\") Long id, Model model) {\n...\n}\n\nWhich of the following requests are mapped to it?\n",
+        "A" : "A.\thttp://localhost:8080/mvc-basic/showUser?userid=105",
+        "B" : "B.\thttp://localhost:8080/mvc-basic/showUser?userId=105",
+        "C" : "C.\thttp://localhost:8080/mvc-basic/showUser?id=105",
+        "D" : "D.\thttp://localhost:8080/mvc-basic/showUser?userId=2c",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "B" ]
+      },
+      {
+        "name" : "Which class in the following list is the default view resolver in Spring:",
+        "A" : "A.\tJspResourceViewResolver",
+        "B" : "B.\tResourceViewResolver",
+        "C" : "C.\tInternalResourceViewResolver",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C" ]
+      },
+      {
+        "name" : "What is authentication?",
+        "A" : "A.\tthe process of securing resources",
+        "B" : "B.\tthe process of making a decision whether a user should be allowed to access a resource",
+        "C" : "C.\tthe process of verifying the validity of the principal’s credentials",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C" ]
+      },
+      {
+        "name" : "What is authorization?",
+        "A" : "A.\tthe process of verifying the validity of the principal’s credentials",
+        "B" : "B.\tthe process of making a decision whether an authenticated user is allowed to perform a certain action within the application",
+        "C" : "C.\tthe process of generating credentials for a user",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "B" ]
+      },
+      {
+        "name" : "What is a principal?",
+        "A" : "A.\tan object storing the credentials for a user",
+        "B" : "B.\tthe term that signifies a user, device, or system that could perform an action within the application",
+        "C" : "C.\ta term that signifies a secured resource",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "B" ]
+      },
+      {
+        "name" : "What can be said about application security?",
+        "A" : "A.\tis unnecessary",
+        "B" : "B.\tshould be provided by third party frameworks",
+        "C" : "C.\tis a cross-cutting concern",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C" ]
+      },
+      {
+        "name" : "Consider the following XML configuration snippet:\n\n<web-app ...>\n<!-- The root web application context is the security context-->\n<context-param>\n<param-name>contextConfigLocation</param-name>\n<param-value>\n/WEB-INF/spring/security-config.xml\n</param-value>\n</context-param>\n\n<listener>\n<listener-class> org.springframework.web.context.ContextLoaderListener\n</listener-class>\n</listener>\n\n346\n \nChapter 6 ■ Spring Web\n\n<filter>\n<filter-name>######</filter-name>\n<filter-class> org.springframework.web.filter.DelegatingFilterProxy\n</filter-class>\n</filter>\n<filter-mapping>\n<filter-name>######</filter-name>\n<url-pattern>/*</url-pattern>\n</filter-mapping>\n\nWhat should replace the ’######’ pattern for the configuration above to be valid in a Spring Secure application?\n",
+        "A" : "A.\tspringSecurityFilterChain",
+        "B" : "B.\tsecurityFilterChain",
+        "C" : "C.\tsecurityHandlerChain",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "Consider the following Java Configuration class snippet:\n\n@Configuration\npublic class SecurityConfig extends WebSecurityConfigurerAdapter { @Override\nprotected void configure(HttpSecurity http) throws Exception {\n...\n}\n}\n\nWhat is missing from the code above that will enable security at URL and at method level?\n",
+        "A" : "A.\t@EnableWebSecurity",
+        "B" : "B.\t@EnableWebMvc",
+        "C" : "C.\t@EnableWebSecurity + @EnableWebMvc",
+        "D" : "D.\t@EnableWebSecurity + @EnableGlobalMethodSecurity(jsr250Enabled = true)",
+        "E" : "E.\t@EnableWebSecurity + @EnableGlobalMethodSecurity(secured = true)",
+        "F" : null,
+        "answer" : [ "D", "E" ]
+      },
+      {
+        "name" : "Which of the following Spring annotations taken together are the equivalent of the @ SpringBootApplication?",
+        "A" : "A.\t@Component",
+        "B" : "B.\t@Configuration",
+        "C" : "C.\t@ComponentScan",
+        "D" : "D.\t@EnableAutoConfiguration",
+        "E" : "E.\t@Controller",
+        "F" : null,
+        "answer" : [ "B", "C", "D" ]
+      },
+      {
+        "name" : "What is REST?",
+        "A" : "A.\ta software design pattern",
+        "B" : "B.\ta framework",
+        "C" : "C.\tan architecture style",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C" ]
+      },
+      {
+        "name" : "Which of the methods below are HTTP methods?",
+        "A" : "A.\tPUT",
+        "B" : "B.\tGET",
+        "C" : "C.\tSUBMIT",
+        "D" : "D.\tOPTIONS",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "B", "D" ]
+      },
+      {
+        "name" : " What Spring class can be used to access and test REST services?",
+        "A" : "A.\tRestTemplate",
+        "B" : "B.\tRmiTemplate",
+        "C" : "C.\tBoth",
+        "D" : "D.\tNone",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C" ]
+      },
+      {
+        "name" : "What does the RestTemplate handle?",
+        "A" : "A.\tResources",
+        "B" : "B.\tRepresentations",
+        "C" : "C.\tBoth",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "What can be said about the @RestController annotation?",
+        "A" : "A.\tIt is used to declare a controller providing REST Services.",
+        "B" : "B.\tIt is annotated with @Controller and @ResponseBody.",
+        "C" : "C.\tIn controllers annotates with this annotation @RequestMapping methods assume @ResponseStatus semantics by default.",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "B" ]
+      },
+      {
+        "name" : "What is the effect of annotating a method with @ResponseStatus?",
+        "A" : "A.\tThe default behavior for resolving to a view for methods returning void or null is overridden.",
+        "B" : "B.\tThe HTTP Status code matching the @ResponseStatus is added to the response body.",
+        "C" : "C.\tIt forces use of HTTP message converters.",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "B" ]
+      },
+      {
+        "name" : "Which of the following HTTP message converters are supported by Spring MVC?",
+        "A" : "A.\tStringHttpMessageConverter",
+        "B" : "B.\tMappingJackson2HttpMessageConverter, but Jackson2 must be in the classpath",
+        "C" : "C.\tYamlMessageConverter",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "B" ]
+      },
+      {
+        "name" : "Which of the following RestTemplates can be used to make a GET REST call to a URL?",
+        "A" : "A.\trestTemplate.getForObject(...)",
+        "B" : "B.\toptionsForAllow(...)",
+        "C" : "C.\tgetForEntity(...)",
+        "D" : "D.\texchange(..., HttpMethod.GET,...)",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "C", "D" ]
+      },
+      {
+        "name" : "Does the following REST handler method comply with the HATEOAS constraint?\n\n@ResponseStatus(HttpStatus.CREATED)\n@RequestMapping(value = \"/create\", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE,\nconsumes = MediaType.APPLICATION_JSON_UTF8_VALUE)\npublic Person createPerson(@RequestBody @Valid Person newPerson) { logger.info(\"-----> CREATE\");\nHospital hospital = hospitalManager.findByCode( newPerson.getHospital().getCode());\nnewPerson.setHospital(hospital);\nPerson person = personManager.save(newPerson); logger.info(\"-----> PERSON: \" + person); return person;\n}\n",
+        "A" : "A.\tYes, because it returns a representation of the object that was created.",
+        "B" : "B.\tNo, because it does not set the location header to the URI of the created resource.",
+        "C" : "C.\tThis is not a REST handler method",
+        "D" : "D.\tNo, because no Link object is added to the returned resource.",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "D" ]
+      },
+      {
+        "name" : "Which of the following affirmations describe the microservices architecture?",
+        "A" : "A.\tIn a microservices architecture, services should have small granularity, and the communications protocols should be lightweight.",
+        "B" : "B.\tIn a microservices architecture, the interprocess communication can be done only using RESTful interfaces.",
+        "C" : "C.\tIn a microservices architecture, the design is unified, and components are interconnected and interdependent.",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      },
+      {
+        "name" : "Which of the following are advantages of the microservices architecture?",
+        "A" : "A.\tMicroservices-based applications are highly scalable.",
+        "B" : "B.\tThere is improvement in fault isolation.",
+        "C" : "C.\tTransaction management is not needed.",
+        "D" : "D.\tDeploying microservices-based application is painless.",
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "B" ]
+      },
+      {
+        "name" : "Which of the following is the core component of a microservices-based distributed application?",
+        "A" : "A.\ta service implementation",
+        "B" : "B.\ta database",
+        "C" : "C.\ta registry and discovery server",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C" ]
+      },
+      {
+        "name" : "What can be said about Spring Cloud?",
+        "A" : "A.\tIt is built on Spring Boot.",
+        "B" : "B.\tIt is an umbrella project that provides tools for developers to quickly build some of the common patterns in distributed systems.",
+        "C" : "C.\tIt is a proprietary Pivotal service for building distributed applications available only by paid subscription.",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A", "B" ]
+      },
+      {
+        "name" : "Which of the following annotations is used to declare an instance of a Eureka server?",
+        "A" : "A.\t@EnableNetflixEureka",
+        "B" : "B.\t@EurekaAutoConfiguration",
+        "C" : "C.\t@EnableEurekaServer",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "C" ]
+      },
+      {
+        "name" : "Which of the following annotations is used for service registration and discovery with a discovery server?",
+        "A" : "A.\t@EnableDiscoveryClient",
+        "B" : "B.\t@EnableEurekaClient",
+        "C" : "C.\t@EnableSeviceRegistration",
+        "D" : null,
+        "E" : null,
+        "F" : null,
+        "answer" : [ "A" ]
+      }
+    ]
+}
+
+
+		
