@@ -3,7 +3,6 @@ package com.epam.codekata;
 public class Atom {
     private String name;
     private double atomic_mass;
-
     private byte number;
 
     public Atom(String name, double atomic_mass, byte number) {
